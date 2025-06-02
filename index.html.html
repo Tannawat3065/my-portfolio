@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosplay Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+
+  <!-- เพิ่มพื้นหลังม่วง -->
+  <style>
+   
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="text-black font-sans p-4 relative overflow-x-hidden">
+
+  <!-- เพิ่มพื้นหลังฟองปลาว่ายน้ำ -->
+  <div class="fixed inset-0 z-0 pointer-events-none">
+    <img src="https://media.giphy.com/media/QWRGGjz64FAhOgt2FQ/giphy.gif?cid=ecf05e47hdmp0or9x4tybb16f37qe8kz775pz144647y3vx2&ep=v1_gifs_related&rid=giphy.gif&ct=g.gif" 
+         class="w-full h-full object-cover opacity-20" alt="background fish" />
+  </div>
+
+  <!-- โลโก้กลมใหม่ -->
+  <div class="flex justify-center mb-4 relative z-10">
+    <div class="w-36 h-36 rounded-full border-4 border-white shadow-xl overflow-hidden relative"
+         style="background-image: url('https://cdn.discordapp.com/attachments/1250662171998814308/1378796736570593503/471547359_122206688258204129_3973105912675471064_n.png?ex=683de806&is=683c9686&hm=edb6d1cd2715a93467be7a037ac2455220b1a494acf0932b710d70e21c05a951&'); background-size: cover;">
+      <img src="https://cdn.discordapp.com/attachments/1250662171998814308/1378796668173942834/453624092_122170635314204129_7012238469022204776_n.jpg?ex=683de7f6&is=683c9676&hm=5b808e655a687943baeba41ca6dc652d1b7f794f7dab34692f1cf4bfe023ab27&"
+           class="w-full h-full object-cover rounded-full" alt="logo" />
+    </div>
+  </div>
+
+  <!-- ค้นหา -->
+  <div class="flex justify-center mb-6 relative z-10">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="ค้นหาสินค้า"
+      class="w-full max-w-xl px-4 py-3 rounded-full border border-gray-300 text-center bg-[#3B3B9A] text-white font-semibold"
+    />
+  </div>
+
+  <!-- เมนูรายชื่อร้าน -->
+  <div class="flex justify-center gap-4 mb-6 relative z-10" id="tagFilter">
+    <button data-tag="ชุดคอสเพลย์ชาย" class="tag-btn bg-[#3B3B9A] text-white px-4 py-2 rounded-full font-medium">คอสเพลย์ชาย</button>
+    <button data-tag="ชุดคอสเพลย์หญิง" class="tag-btn bg-[#3B3B9A] text-white px-4 py-2 rounded-full font-medium">คอสเพลย์หญิง</button>
+    <button data-tag="ชุดมาสคอต" class="tag-btn bg-[#3B3B9A] text-white px-4 py-2 rounded-full font-medium">มาสคอต</button>
+    <button data-tag="all" class="tag-btn bg-[#3B3B9A] text-white px-4 py-2 rounded-full font-medium">แสดงทั้งหมด</button>
+  </div>
+
+  <!-- หมวดหมู่สินค้า -->
+  <div class="mb-4 relative z-10">
+    <span class="bg-[#3B3B9A] text-white px-3 py-1 rounded-full font-bold">สินค้า</span>
+  </div>
+
+  <!-- โซนสินค้า -->
+  <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-20 relative z-10">
+
+  <!-- ปุ่มลงสินค้า -->
+  <button id="openModalBtn" class="fixed bottom-6 right-6 bg-[#3B3B9A] text-white px-6 py-3 rounded-full shadow-lg text-lg font-semibold z-50">+ ลงสินค้า</button>
+
+  <!-- Modal เพิ่มสินค้า -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-box bg-[#5e6298] text-black">
+      <h2 class="text-xl font-bold mb-4 text-white">เพิ่มสินค้า</h2>
+      <form id="productForm" class="space-y-4">
+        <input type="text" name="name" placeholder="ชื่อสินค้า" required class="input" />
+        <input type="number" name="price" placeholder="ราคา" required class="input" />
+        <textarea name="description" placeholder="รายละเอียด" class="input"></textarea>
+        <label class="text-white"><input type="file" name="images" multiple accept="image/*" required class="input" /></label>
+        <input type="url" name="chatLink" placeholder="ลิงก์แชท Facebook" class="input" />
+
+        <div>
+          <label class="font-semibold text-white">Tag สินค้า:</label><br/>
+          <label class="text-white"><input type="radio" name="productTag" value="ชุดคอสเพลย์ชาย" required> คอสเพลย์ชาย</label>
+          <label class="text-white"><input type="radio" name="productTag" value="ชุดคอสเพลย์หญิง"> คอสเพลย์หญิง</label>
+          <label class="text-white"><input type="radio" name="productTag" value="ชุดมาสคอต"> มาสคอต</label>
+        </div>
+
+        <div>
+          <label class="font-semibold text-white">ประเภทสินค้า:</label><br/>
+          <label class="text-white"><input type="checkbox" name="type" value="ขาย"> ขาย</label>
+          <label class="text-white"><input type="checkbox" name="type" value="เช่า"> เช่า</label>
+        </div>
+
+        <div class="flex gap-4 mt-4">
+          <button type="submit" class="bg-[#3B3B9A] text-white px-4 py-2 rounded">เพิ่มสินค้า</button>
+          <button type="button" onclick="closeModal()" class="bg-gray-300 text-black px-4 py-2 rounded">ยกเลิก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal แสดงรายละเอียดสินค้า -->
+  <div id="detailModal" class="modal hidden">
+    <div class="bg-white p-8 rounded-2xl w-full max-w-3xl shadow-2xl relative h-[90vh] overflow-y-auto">
+      <button onclick="closeDetailModal()" class="absolute top-2 right-3 text-2xl font-bold text-gray-500">&times;</button>
+
+      <div id="detailImage" class="relative w-full h-80 overflow-hidden rounded-xl mb-6">
+        <!-- ภาพสไลด์ -->
+      </div>
+
+      <h3 id="detailName" class="text-2xl font-bold mb-3"></h3>
+      <p id="detailPrice" class="text-orange-500 text-xl font-semibold mb-3"></p>
+      <p id="detailDescription" class="text-gray-700 mb-6 leading-relaxed"></p>
+      <a id="chatBtn" href="#" target="_blank" class="bg-blue-500 text-white px-6 py-3 rounded-xl inline-block text-center w-full text-lg">แชทผู้ขาย</a>
+    </div>
+  </div>
+
+</body>
+</html>
